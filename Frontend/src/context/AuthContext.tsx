@@ -76,7 +76,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       try {
         const response = await authAPI.getProfile();
-        dispatch({ type: 'LOGIN', payload: response.data.user });
+        // Type assertion for response.data
+        const data = response.data as { user: User };
+        dispatch({ type: 'LOGIN', payload: data.user });
       } catch (error: any) {
         // Only log if it's not a 401 (which is expected for unauthenticated users)
         if (error?.response?.status !== 401) {

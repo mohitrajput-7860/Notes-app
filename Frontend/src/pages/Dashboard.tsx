@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
     setIsLoading(true);
     try {
       const response = await notesAPI.getNotes();
-      setNotes(response.data.notes);
+      setNotes((response.data as { notes: Note[] }).notes);
     } catch (error) {
       console.error('Failed to fetch notes:', error);
       if (
@@ -73,7 +73,8 @@ const Dashboard: React.FC = () => {
     setIsCreating(true);
     try {
       const response = await notesAPI.createNote(newNote);
-      setNotes(prev => [response.data.note, ...prev]);
+      const data = response.data as { note: Note };
+      setNotes(prev => [data.note, ...prev]);
       setNewNote({ title: '', content: '' });
       toast.success('Note created successfully!');
     } catch (error) {
@@ -97,8 +98,9 @@ const Dashboard: React.FC = () => {
         content: editingNote.content,
       });
 
+      const updatedNote = (response.data as { note: Note }).note;
       setNotes(prev =>
-        prev.map(note => (note.id === editingNote.id ? response.data.note : note))
+        prev.map(note => (note.id === editingNote.id ? updatedNote : note))
       );
 
       setEditingNote(null);
