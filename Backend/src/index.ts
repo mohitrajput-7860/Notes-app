@@ -4,6 +4,14 @@ import app from './app.js';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
+
+// --- START OF DEBUGGING CODE ---
+// Let's print the environment variable to see what the server is actually getting.
+console.log('--- DEBUG: Checking Environment Variables ---');
+console.log('Value for MONGODB_URI:', process.env.MONGODB_URI);
+console.log('-------------------------------------------');
+// --- END OF DEBUGGING CODE ---
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/hd-notes';
 
 // MongoDB connection
@@ -33,3 +41,4 @@ process.on('SIGINT', async () => {
     process.exit(1);
   }
 });
+
