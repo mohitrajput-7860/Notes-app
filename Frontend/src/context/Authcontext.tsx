@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { User, AuthState } from '../types';
+import type { User, AuthState } from '../types';
 import { authAPI } from '../services/api';
 
 interface AuthContextType extends AuthState {
@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await authAPI.logout();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('user');
@@ -77,9 +77,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const response = await authAPI.getProfile();
         dispatch({ type: 'LOGIN', payload: response.data.user });
-      } catch (error) {
+      } catch (error: any) {
         // Only log if it's not a 401 (which is expected for unauthenticated users)
-        if (error.response?.status !== 401) {
+        if (error?.response?.status !== 401) {
           console.error('Auth check failed:', error);
         }
         localStorage.removeItem('user');

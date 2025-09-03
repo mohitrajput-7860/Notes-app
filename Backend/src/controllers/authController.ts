@@ -82,11 +82,11 @@ export const verifySignupOTP = async (req: Request, res: Response): Promise<void
     // Generate JWT token
     const token = generateToken(user._id.toString());
 
-    // Set HTTP-only cookie
+    // Set HTTP-only cookie with conditional sameSite
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -160,11 +160,11 @@ export const verifySigninOTP = async (req: Request, res: Response): Promise<void
     // Generate JWT token
     const token = generateToken(user._id.toString());
 
-    // Set HTTP-only cookie
+    // Set HTTP-only cookie with conditional sameSite
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -192,7 +192,7 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
   try {
     // Get token from cookies first, then from Authorization header
     let token = req.cookies.token;
-    
+
     if (!token && req.headers.authorization) {
       const authHeader = req.headers.authorization;
       if (authHeader.startsWith('Bearer ')) {
