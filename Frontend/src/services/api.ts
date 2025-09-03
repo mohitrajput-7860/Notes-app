@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { SignupData, SigninData, Note } from '../types';
+import type { SignupData, SigninData } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://notes-app-mern-backend.onrender.com/api';
 

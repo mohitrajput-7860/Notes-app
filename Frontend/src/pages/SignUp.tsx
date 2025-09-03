@@ -36,7 +36,6 @@ const SignUp: React.FC = () => {
   
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
 
   const validateForm = (): boolean => {
@@ -86,7 +85,6 @@ const SignUp: React.FC = () => {
         dateOfBirth: formData.dateOfBirth
       });
       
-      setOtpSent(true);
       setStep(2);
       toast.success('OTP sent successfully! Check your email.');
     } catch (error: any) {
@@ -114,7 +112,7 @@ const SignUp: React.FC = () => {
     try {
       const response = await authAPI.verifySignupOTP(formData);
       
-      login(response.data.user);
+      login((response.data as { user: any }).user);
       toast.success('Account created successfully!');
       
       // Navigate to the page user was trying to access, or dashboard by default

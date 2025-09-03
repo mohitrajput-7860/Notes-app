@@ -86,7 +86,8 @@ const SignIn: React.FC = () => {
     try {
       const response = await authAPI.verifySigninOTP(formData);
       
-      login(response.data.user);
+      const data = response.data as { user: any };
+      login(data.user);
       toast.success('Signed in successfully!');
       
       // Navigate to the page user was trying to access, or dashboard by default
